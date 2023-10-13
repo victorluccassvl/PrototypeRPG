@@ -1,0 +1,91 @@
+{
+    "name": "Input",
+    "maps": [
+        {
+            "name": "DefaultMap",
+            "id": "6d82144c-47d6-4b3d-8d96-5f13436113ff",
+            "actions": [
+                {
+                    "name": "PrimaryInteraction",
+                    "type": "Button",
+                    "id": "4fc0ee6d-e50c-4a4e-8d51-11c49669f47b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SecondaryInteraction",
+                    "type": "Button",
+                    "id": "66787617-6798-4f41-9266-202ce94a497e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cursor",
+                    "type": "Value",
+                    "id": "4a7e6c71-f6ef-4e42-ab32-a2b5a785be51",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "92cc438f-9bc8-4b28-8cdb-d687962cef0e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "PrimaryInteraction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db85829d-9f19-4158-a48e-4876a2271c92",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryInteraction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6614a158-c016-48c7-a60e-d501d9c47b37",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "KeyboardAndMouse",
+            "bindingGroup": "KeyboardAndMouse",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
