@@ -18,12 +18,12 @@ public class WorldUI_MovementDestinationIndicator : MonoBehaviour
         Messages.PlayerArrivedDestination -= HideIndicator;
     }
 
-    private void ShowIndicator(RaycastHit hit)
+    private void ShowIndicator(Vector3 position, Vector3 normal)
     {
         movementTargetImage.enabled = true;
 
-        movementTargetImage.transform.position = hit.point + hit.normal * normalOffset;
-        movementTargetImage.transform.forward = hit.normal;
+        movementTargetImage.transform.position = position + normal * normalOffset;
+        movementTargetImage.transform.forward = normal;
     }
 
     private void HideIndicator()
