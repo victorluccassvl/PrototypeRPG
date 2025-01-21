@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.AI;
-using System.IO;
-using Unity.VisualScripting;
 
 public enum InteractionTargetType
 {
@@ -73,12 +69,6 @@ public class PlayerManager : SingletonMonoBehaviour<PlayerManager>
         navMeshAgent.SetDestination(hit.point);
 
         while (navMeshAgent.pathPending) yield return null;
-
-        if (navMeshAgent.pathStatus == NavMeshPathStatus.PathPartial)
-        {
-            navMeshAgent.SetDestination(navMeshAgent.nextPosition);
-            yield break;
-        }
 
         wasWalking = true;
         Physics.Raycast(navMeshAgent.destination + Vector3.up * 0.1f, Vector3.down, out hit, 0.2f);

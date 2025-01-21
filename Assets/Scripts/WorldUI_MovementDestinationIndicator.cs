@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WorldUI_MovementDestinationIndicator : MonoBehaviour
@@ -30,5 +31,4 @@ public class WorldUI_MovementDestinationIndicator : MonoBehaviour
     {
         movementTargetImage.enabled = false;
     }
-
 }

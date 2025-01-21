@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,10 +15,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
         }
     }
 
-    protected override void Awake()
+    protected override void PostAwake()
     {
-        base.Awake();
-
         Inputs.DefaultMap.Enable();
     }
 }

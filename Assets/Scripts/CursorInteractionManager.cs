@@ -17,11 +17,9 @@ public class CursorInteractionManager : SingletonMonoBehaviour<CursorInteraction
         InputManager.Get.Inputs.DefaultMap.PrimaryInteraction.performed += OnPrimaryInteractionInput;
     }
 
-    protected override void OnDestroy()
+    protected override void PreDestroy()
     {
         if (InputManager.Get) InputManager.Get.Inputs.DefaultMap.PrimaryInteraction.performed -= OnPrimaryInteractionInput;
-
-        base.OnDestroy();
     }
 
     private Vector3 lastHitPoint = Vector3.zero;

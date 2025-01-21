@@ -3,27 +3,41 @@ using UnityEngine;
 
 public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField] private bool isLoadPersistent;
-
-    public static T Get { get; protected set; }
-    public static Action OnSingletonInitialized = delegate { };
-
-    protected virtual void Awake()
+    protected static T instance = null;
+    public static T Get
     {
-        if (Get != null)
+        get
         {
-            Destroy(this);
+            return instance;
         }
-        else
+        protected set
         {
-            Get = this as T;
-            if (isLoadPersistent) DontDestroyOnLoad(Get);
-            OnSingletonInitialized();
+            instance = value;
         }
     }
 
-    protected virtual void OnDestroy()
+    public static Action OnSingletonInitialized = delegate { };
+
+    protected virtual void PostAwake() { }
+    private void Awake()
     {
-        if (Get == this) Get = null;
+        if (instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+
+        Get = this as T;
+        OnSingletonInitialized();
+        PostAwake();
+    }
+
+    protected virtual void PreDestroy() { }
+    private void OnDestroy()
+    {
+        if (Get != this) return;
+
+        PreDestroy();
+        Get = null;
     }
 }
