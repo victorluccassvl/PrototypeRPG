@@ -1,3 +1,4 @@
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,12 +12,14 @@ public class WorldUI_MovementDestinationIndicator : MonoBehaviour
     {
         Messages.NewPlayerMovementDestination += ShowIndicator;
         Messages.PlayerArrivedDestination += HideIndicator;
+        Messages.PlayerDied += HideIndicator;
     }
 
     private void OnDestroy()
     {
         Messages.NewPlayerMovementDestination -= ShowIndicator;
         Messages.PlayerArrivedDestination -= HideIndicator;
+        Messages.PlayerDied -= HideIndicator;
     }
 
     private void ShowIndicator(Vector3 position, Vector3 normal)

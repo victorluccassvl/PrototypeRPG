@@ -5,6 +5,11 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
+public enum InteractionTargetType
+{
+    Terrain
+}
+
 public class CursorInteractionManager : SingletonMonoBehaviour<CursorInteractionManager>
 {
     [SerializeField] private float maxRaycastDistance = 100f;
