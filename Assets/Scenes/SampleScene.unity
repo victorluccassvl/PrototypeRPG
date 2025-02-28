@@ -446,9 +446,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxRaycastDistance: 100
-  raycastLayers:
+  entityLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73368e9e4a94e2048a3bb9bf8b7aa3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 0}
+  target: {fileID: 0}
   damage: 10
 --- !u!4 &1246309076
 Transform:

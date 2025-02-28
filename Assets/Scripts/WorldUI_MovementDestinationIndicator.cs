@@ -10,15 +10,17 @@ public class WorldUI_MovementDestinationIndicator : MonoBehaviour
 
     private void Awake()
     {
-        Messages.NewPlayerMovementDestination += ShowIndicator;
-        Messages.PlayerArrivedDestination += HideIndicator;
+        Messages.NewPlayerMovementTerrainDestination += ShowIndicator;
+        Messages.PlayerArrivedTerrainDestination += HideIndicator;
+        Messages.NewPlayerFollowTarget += HideIndicator;
         Messages.PlayerDied += HideIndicator;
     }
 
     private void OnDestroy()
     {
-        Messages.NewPlayerMovementDestination -= ShowIndicator;
-        Messages.PlayerArrivedDestination -= HideIndicator;
+        Messages.NewPlayerMovementTerrainDestination -= ShowIndicator;
+        Messages.PlayerArrivedTerrainDestination -= HideIndicator;
+        Messages.NewPlayerFollowTarget -= HideIndicator;
         Messages.PlayerDied -= HideIndicator;
     }
 

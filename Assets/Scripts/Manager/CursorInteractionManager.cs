@@ -7,13 +7,15 @@ using UnityEngine.InputSystem;
 
 public enum InteractionTargetType
 {
-    Terrain
+    Terrain,
+    Entity,
 }
 
 public class CursorInteractionManager : SingletonMonoBehaviour<CursorInteractionManager>
 {
     [SerializeField] private float maxRaycastDistance = 100f;
-    [SerializeField] private LayerMask raycastLayers;
+    [SerializeField] private LayerMask entityLayer;
+    [SerializeField] private LayerMask terrainLayer;
 
     public static Action<InteractionTargetType, RaycastHit> OnInteractionTargeted = delegate { };
 
@@ -38,10 +40,13 @@ public class CursorInteractionManager : SingletonMonoBehaviour<CursorInteraction
         Ray ray = Camera.main.ScreenPointToRay(InputManager.Get.Inputs.DefaultMap.Cursor.ReadValue<Vector2>());
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, maxRaycastDistance, raycastLayers, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(ray, out hit, maxRaycastDistance, entityLayer.value + terrainLayer.value, QueryTriggerInteraction.Collide))
         {
             lastHitPoint = hit.point;
-            OnInteractionTargeted(InteractionTargetType.Terrain, hit);
+            int layerMask = 1 << hit.collider.gameObject.layer;
+
+            if (layerMask == terrainLayer.value) OnInteractionTargeted(InteractionTargetType.Terrain, hit);
+            else if (layerMask == entityLayer.value) OnInteractionTargeted(InteractionTargetType.Entity, hit);
         }
     }
 }

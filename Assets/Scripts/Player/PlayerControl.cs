@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -19,7 +20,10 @@ public class PlayerControl : MonoBehaviour
         switch (targetType)
         {
             case InteractionTargetType.Terrain:
-                owner.Move.TrySetDestination(hit);
+                owner.Move.SetDestination(hit);
+                break;
+            case InteractionTargetType.Entity:
+                owner.Move.SetFollowTarget(Entity.Get(hit.collider));
                 break;
             default:
                 break;

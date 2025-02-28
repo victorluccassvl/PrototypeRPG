@@ -6,6 +6,12 @@ public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private Player owner;
 
+    [SerializeField] private float defaultStopDistance;
+
+    private float currentFollowStopDistance;
+    private Entity followedEntity;
+    private RaycastHit destinationHit;
+
     private void OnDrawGizmos()
     {
         if (owner == null || owner.NavMeshAgent == null) return;
@@ -25,39 +31,78 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    private bool wasWalking = false;
+    private bool wasMoving = false;
     public void Update()
     {
         if (float.IsInfinity(owner.NavMeshAgent.remainingDistance)) return;
 
-        if (owner.NavMeshAgent.remainingDistance <= owner.NavMeshAgent.stoppingDistance && wasWalking)
+        if (owner.NavMeshAgent.remainingDistance <= owner.NavMeshAgent.stoppingDistance && wasMoving)
         {
-            wasWalking = false;
-            Messages.PlayerArrivedDestination();
+            wasMoving = false;
+            if (followedEntity == null) Messages.PlayerArrivedTerrainDestination();
+            else Messages.PlayerReachedFollowTarget();
         }
     }
 
-    public void TrySetDestination(RaycastHit hit)
+    public void SetFollowDistance(float distance) => currentFollowStopDistance = distance;
+    public void SetFollowTarget(Entity followedEntity)
     {
-        if (setPlayerMovementDestinationCoroutine != null)
-        {
-            StopCoroutine(setPlayerMovementDestinationCoroutine);
-            setPlayerMovementDestinationCoroutine = null;
-        }
-        setPlayerMovementDestinationCoroutine = StartCoroutine(SetPlayerMovementDestinationRoutine(hit));
+        if (followedEntity == null) return;
+        if (followedEntity == owner) return;
+        if (followedEntity == this.followedEntity) return;
+
+        this.followedEntity = followedEntity;
+        StopMovementCoroutines();
+        owner.NavMeshAgent.stoppingDistance = currentFollowStopDistance;
+        movePlayerToFollowTargetCoroutine = StartCoroutine(MovePlayerToFollowTargetRoutine());
     }
 
-    private Coroutine setPlayerMovementDestinationCoroutine = null;
-    private IEnumerator SetPlayerMovementDestinationRoutine(RaycastHit hit)
+    private Coroutine movePlayerToFollowTargetCoroutine = null;
+    private IEnumerator MovePlayerToFollowTargetRoutine()
     {
-        owner.NavMeshAgent.SetDestination(hit.point);
+        owner.NavMeshAgent.SetDestination(followedEntity.transform.position);
 
         while (owner.NavMeshAgent.pathPending) yield return null;
 
-        wasWalking = true;
-        Physics.Raycast(owner.NavMeshAgent.destination + Vector3.up * 0.1f, Vector3.down, out hit, 0.2f);
-        Messages.NewPlayerMovementDestination(hit.point, hit.normal);
+        Messages.NewPlayerFollowTarget();
+        wasMoving = true;
+        movePlayerToFollowTargetCoroutine = null;
+    }
 
-        setPlayerMovementDestinationCoroutine = null;
+    public void SetDestination(RaycastHit hit)
+    {
+        destinationHit = hit;
+        followedEntity = null;
+        StopMovementCoroutines();
+        owner.NavMeshAgent.stoppingDistance = defaultStopDistance;
+        movePlayerToDestinationCoroutine = StartCoroutine(MovePlayerToDestinationRoutine());
+    }
+
+    private Coroutine movePlayerToDestinationCoroutine = null;
+    private IEnumerator MovePlayerToDestinationRoutine()
+    {
+        owner.NavMeshAgent.SetDestination(destinationHit.point);
+
+        while (owner.NavMeshAgent.pathPending) yield return null;
+
+        wasMoving = true;
+        Physics.Raycast(owner.NavMeshAgent.destination + Vector3.up * 0.1f, Vector3.down, out destinationHit, 0.2f);
+        Messages.NewPlayerMovementTerrainDestination(destinationHit.point, destinationHit.normal);
+
+        movePlayerToDestinationCoroutine = null;
+    }
+
+    private void StopMovementCoroutines()
+    {
+        if (movePlayerToDestinationCoroutine != null)
+        {
+            StopCoroutine(movePlayerToDestinationCoroutine);
+            movePlayerToDestinationCoroutine = null;
+        }
+        if (movePlayerToFollowTargetCoroutine != null)
+        {
+            StopCoroutine(movePlayerToFollowTargetCoroutine);
+            movePlayerToFollowTargetCoroutine = null;
+        }
     }
 }
