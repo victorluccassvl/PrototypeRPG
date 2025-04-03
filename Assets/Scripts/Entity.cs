@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Build.Pipeline;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
@@ -15,6 +14,9 @@ public class Entity : MonoBehaviour
 
     public int currentHealth;
     public int maxHealth;
+    public int currentMana;
+    public int maxMana;
+    public int hostilityGroup;
 
     public bool IsAlive => currentHealth > 0;
     public float PercentualHealth => ((float)currentHealth) / maxHealth;

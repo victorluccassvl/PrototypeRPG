@@ -5,6 +5,8 @@ public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private Player owner;
 
+    [SerializeField] private BasicAttackAbility basicAttackAbility;
+
     private void Start()
     {
         CursorInteractionManager.OnInteractionTargeted += TryInteract;
@@ -23,6 +25,8 @@ public class PlayerControl : MonoBehaviour
                 owner.Move.SetDestination(hit);
                 break;
             case InteractionTargetType.Entity:
+                Entity target = Entity.Get(hit.collider);
+                if (basicAttackAbility.CanActivate(target)) basicAttackAbility.Activate(target);
                 owner.Move.SetFollowTarget(Entity.Get(hit.collider));
                 break;
             default:
